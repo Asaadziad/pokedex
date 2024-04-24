@@ -51,6 +51,14 @@ func cmdExit() error {
 }
 
 func cmdMap() error {
+	areas, err := GetLocations()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	for _, e := range areas.Results {
+		fmt.Println(e.Name)
+	}
 	return nil
 }
 
