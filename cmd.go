@@ -8,7 +8,7 @@ import (
 type cmd struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*Config) error
 }
 
 func Commands() map[string]cmd {
@@ -31,12 +31,12 @@ func Commands() map[string]cmd {
 		"mapb": {
 			name:        "mapb",
 			description: "gets the previous 20 location areas",
-			callback:    nil,
+			callback:    cmdMapb,
 		},
 	}
 }
 
-func cmdHelp() error {
+func cmdHelp(cfg *Config) error {
 	fmt.Println("Welcome to pokedex")
 	fmt.Println("Usage:")
 	for _, i := range Commands() {
@@ -45,17 +45,36 @@ func cmdHelp() error {
 	return nil
 }
 
-func cmdExit() error {
+func cmdExit(cfg *Config) error {
 	os.Exit(0)
 	return nil
 }
 
-func cmdMap() error {
-	areas, err := GetLocations()
+func cmdMap(cfg *Config) error {
+	areas, err := GetLocations(cfg)
 	if err != nil {
-		fmt.Println(err)
 		return err
 	}
+	cfg.Next = areas.Next
+	cfg.Previous = areas.Previous
+	for _, e := range areas.Results {
+		fmt.Println(e.Name)
+	}
+	return nil
+}
+
+func cmdMapb(cfg *Config) error {
+	if cfg.Previous == nil {
+		cfg.Next = "https://pokeapi.co/api/v2/location-area/"
+	} else {
+		cfg.Next = *cfg.Previous
+	}
+	areas, err := GetLocations(cfg)
+	if err != nil {
+		return err
+	}
+	cfg.Next = areas.Next
+	cfg.Previous = areas.Previous
 	for _, e := range areas.Results {
 		fmt.Println(e.Name)
 	}

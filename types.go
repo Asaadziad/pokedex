@@ -10,3 +10,8 @@ type LocationAreas struct {
 		URL  string `json:"url"`
 	} `json:"results"`
 }
+
+type Config struct {
+	Next     string
+	Previous *string
+}

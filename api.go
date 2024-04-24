@@ -6,8 +6,8 @@ import (
 	"net/http"
 )
 
-func GetLocations() (*LocationAreas, error) {
-	res, err := http.Get("https://pokeapi.co/api/v2/location-area/")
+func GetLocations(cfg *Config) (*LocationAreas, error) {
+	res, err := http.Get(cfg.Next)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +18,6 @@ func GetLocations() (*LocationAreas, error) {
 	var locAreas LocationAreas
 	err = json.Unmarshal(body, &locAreas)
 	if err != nil {
-
 		return nil, err
 	}
 	return &locAreas, nil

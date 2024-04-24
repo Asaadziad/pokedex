@@ -1,6 +1,6 @@
 package main
 
-func Eval(s []string) error {
-	err := Commands()[s[0]].callback()
+func Eval(cfg *Config, s []string) error {
+	err := Commands()[s[0]].callback(cfg)
 	return err
 }
