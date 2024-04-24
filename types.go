@@ -1,5 +1,7 @@
 package main
 
+import "github.com/Asaadziad/pokedex/internal/pokecache"
+
 // auto generated
 type LocationAreas struct {
 	Count    int     `json:"count"`
@@ -14,4 +16,5 @@ type LocationAreas struct {
 type Config struct {
 	Next     string
 	Previous *string
+	Cache    *pokecache.Cache
 }
